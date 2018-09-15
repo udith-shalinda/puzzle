@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+	Puzzle
+	</title>
+	<style>
+	* {padding:0; margin:0; auto;}
+	
+	canvas { background: #eee; display: block; margin : 0; auto;}
+	
+	</style>
+	
+</head>
+
+<body>
+
+<canvas id = "myGame" width = "570" height = "670"></canvas>
+
+<script>
+
+
+
+var canvas = document.getElementById("myGame");
+var game2 = canvas.getContext("2d");
+var x;
+var y;
+var x1;
+var y1;
+var brickRowCount = 4;
+var brickColumnCount = 4;
+var brickWidth = 115;
+var brickHeight = 115;
+var brickPadding = 10;
+var brickOffSetTop = 135;
+var brickOffSetLeft = 35;
+var score = 0;
+var number;
+var rightPressed = false;
+var leftPressed = false;
+var a = [7,5,13,6,10,14,4,3,8,0,1,9,2,15,12,11];
+//var a = [1,5,9,13,2,6,10,14,3,7,11,15,4,8,12,0];
+
+
+var bricks = [];
+for(var c = 0; c < brickColumnCount; c++){
+	bricks[c] = [];
+	for(var r = 0; r < brickRowCount; r++){
+		bricks[c][r] = {x: 0, y : 0,status: 1};
+	}
+}
+
+
+
+
+document.addEventListener("click", getClickPosition, false);
+
+
+
+
+
+function draw(){
+	game2.clearRect(0,0, canvas.width, canvas.height);
+	puzzle();
+	start1();
+	drawBricks();
+	drawScore();
+	//drawNumbers();
+	//stop();
+	numbers();
+	collisionDetection();
+	//numberControl();
+	end();
+	
+
+
+}
+setInterval(draw, 10);
+
+
+
+
+
+
+
+
+
+
+
+function drawBricks(){
+	for(var c = 0; c<brickColumnCount;c++){
+		for(var r = 0;r<brickRowCount; r++){
+			if(bricks[c][r].status ==1){	
+				var brickX = (c*(brickWidth + brickPadding)) + brickOffSetLeft;
+				var brickY = (r*(brickHeight + brickPadding)) + brickOffSetTop;
+				bricks[c][r].x = brickX;
+				bricks[c][r].y = brickY;
+				game2.beginPath();
+				game2.rect(brickX, brickY,brickWidth, brickHeight);
+				game2.fillStyle = "green";
+				game2.fill();
+				game2.closePath();
+				
+				
+			}
+		}
+	
+	}
+						
+	
+}
+
+function collisionDetection(){
+	for(var c = 0; c<brickColumnCount;c++){
+		for(var r = 0;r<brickRowCount; r++){
+				var brickX = (c*(brickWidth + brickPadding)) + brickOffSetLeft;
+				var brickY = (r*(brickHeight + brickPadding)) + brickOffSetTop;
+				
+				
+				bricks[c][r].x = brickX;
+				bricks[c][r].y = brickY;
+					if(x1>=brickX && x1<=brickWidth+brickX && y1>=brickY&& y1<= brickHeight+brickY){
+						
+					game2.clearRect(brickX, brickY,brickWidth, brickHeight);
+				
+					score++;
+					
+					
+					
+					
+					
+					
+					if(score == 1000){
+						//alert("Time Out!");
+						//document.location.reload();
+					}
+					
+				}
+			
+		}
+	}
+}
+
+score = score+ 1;
+
+function drawScore(){
+	game2.font = "20px Arial";
+	game2.fillStyle = "#0095DD";
+	game2.fillText("Score : "+ score , 8,100);
+}
+
+function puzzle(){
+	game2.font = "40px Arial";
+	game2.fillStyle = "#0095DD";
+	game2.fillText("Puzzle" , 230,50);
+}
+function start1(){
+	game2.font = "20px Arial";
+	game2.fillStyle = "#0095DD";
+	game2.fillText("Press 0 to start" , 300,650);
+}
+
+
+function getClickPosition(e) {
+		x1 = e.clientX;
+		y1 = e.clientY;
+}
+
+function numbers(){
+	var w = 0;
+	
+	
+	for(var c = 0; c<brickColumnCount;c++){
+		for(var r = 0;r<brickRowCount; r++){
+			var brickX = (c*(brickWidth + brickPadding)) + brickOffSetLeft;
+			var brickY = (r*(brickHeight + brickPadding)) + brickOffSetTop;
+			var numX = (c*(brickWidth + brickPadding)) + brickOffSetLeft+ 25;
+			var numY = (r*(brickHeight + brickPadding)) + brickOffSetTop+ 80;
+		
+			
+			
+			
+			var brickx0 = (0*(brickWidth + brickPadding)) + brickOffSetLeft;
+			var bricky0 = (0*(brickHeight + brickPadding)) + brickOffSetTop;
+			var brickx1 = (1*(brickWidth + brickPadding)) + brickOffSetLeft;
+			var bricky1 = (1*(brickHeight + brickPadding)) + brickOffSetTop;
+			var brickx2 = (2*(brickWidth + brickPadding)) + brickOffSetLeft;
+			var bricky2 = (2*(brickHeight + brickPadding)) + brickOffSetTop;
+			var brickx3 = (3*(brickWidth + brickPadding)) + brickOffSetLeft;
+			var bricky3 = (3*(brickHeight + brickPadding)) + brickOffSetTop;
+
+			
+			
+			
+		if(x1>=brickx0 && x1<=brickWidth+brickx0 && y1>=bricky0&& y1<= brickHeight+bricky0){
+					if(a[4]==0 ){
+					var ab = a[4];
+					a[4] = a[0];
+					a[0] = ab;
+					}else if(a[1]==0){
+					var ab = a[1];
+					a[1] = a[0];
+					a[0] = ab;
+					}
+		
+		}		
+		if(x1>=brickx3 && x1<=brickWidth+brickx3 && y1>=bricky0&& y1<= brickHeight+bricky0){
+					if(a[8]==0 ){
+					var ab = a[8];
+					a[8] = a[12];
+					a[12] = ab;
+					}else if(a[13]==0){
+					var ab = a[13];
+					a[13] = a[12];
+					a[12] = ab;
+					}
+		
+		}
+		if(x1>=brickx0 && x1<=brickWidth+brickx0 && y1>=bricky3&& y1<= brickHeight+bricky3){
+					if(a[2]==0 ){
+					var ab = a[2];
+					a[2] = a[3];
+					a[3] = ab;
+					}else if(a[7]==0){
+					var ab = a[7];
+					a[7] = a[3];
+					a[3] = ab;
+					}
+		
+		}
+		if(x1>=brickx3 && x1<=brickWidth+brickx3 && y1>=bricky3&& y1<= brickHeight+bricky3){
+					if(a[14]==0 ){
+					var ab = a[14];
+					a[14] = a[15];
+					a[15] = ab;
+					}else if(a[11]==0){
+					var ab = a[11];
+					a[11] = a[15];
+					a[15] = ab;
+					}
+		
+		}	
+		
+		if(x1>=brickx0 && x1<=brickWidth+brickx0 && y1>=bricky1&& y1<= brickHeight+bricky1){
+					if(a[0]==0 ){
+					var ab = a[0];
+					a[0] = a[1];
+					a[1] = ab;
+					}else if(a[2]==0){
+					var ab = a[2];
+					a[2] = a[1];
+					a[1] = ab;
+					}
+					else if(a[5]==0){
+					var ab = a[5];
+					a[5] = a[1];
+					a[1] = ab;
+					}
+		
+		}	
+		
+		if(x1>=brickx0 && x1<=brickWidth+brickx0 && y1>=bricky2&& y1<= brickHeight+bricky2){
+					if(a[1]==0 ){
+					var ab = a[1];
+					a[1] = a[2];
+					a[2] = ab;
+					}else if(a[3]==0){
+					var ab = a[3];
+					a[3] = a[2];
+					a[2] = ab;
+					}
+					else if(a[6]==0){
+					var ab = a[6];
+					a[6] = a[2];
+					a[2] = ab;
+					}
+		
+		}	
+		
+		if(x1>=brickx1 && x1<=brickWidth+brickx1 && y1>=bricky0&& y1<= brickHeight+bricky0){
+					if(a[0]==0 ){
+					var ab = a[0];
+					a[0] = a[4];
+					a[4] = ab;
+					}else if(a[8]==0){
+					var ab = a[8];
+					a[8] = a[4];
+					a[4] = ab;
+					}
+					else if(a[5]==0){
+					var ab = a[5];
+					a[5] = a[4];
+					a[4] = ab;
+					}
+		
+		}	
+		
+		if(x1>=brickx2 && x1<=brickWidth+brickx2 && y1>=bricky0&& y1<= brickHeight+bricky0){
+					if(a[4]==0 ){
+					var ab = a[4];
+					a[4] = a[8];
+					a[8] = ab;
+					}else if(a[12]==0){
+					var ab = a[12];
+					a[12] = a[8];
+					a[8] = ab;
+					}
+					else if(a[9]==0){
+					var ab = a[9];
+					a[9] = a[8];
+					a[8] = ab;
+					}
+		
+		}	
+		
+		if(x1>=brickx3 && x1<=brickWidth+brickx3 && y1>=bricky1&& y1<= brickHeight+bricky1){
+					if(a[12]==0 ){
+					var ab = a[12];
+					a[12] = a[13];
+					a[13] = ab;
+					}else if(a[14]==0){
+					var ab = a[14];
+					a[14] = a[13];
+					a[13] = ab;
+					}
+					else if(a[9]==0){
+					var ab = a[9];
+					a[9] = a[13];
+					a[13] = ab;
+					}
+		
+		}	
+		
+		if(x1>=brickx3 && x1<=brickWidth+brickx3 && y1>=bricky2&& y1<= brickHeight+bricky2){
+					if(a[13]==0 ){
+					var ab = a[13];
+					a[13] = a[14];
+					a[14] = ab;
+					}else if(a[15]==0){
+					var ab = a[15];
+					a[15] = a[14];
+					a[14] = ab;
+					}
+					else if(a[10]==0){
+					var ab = a[10];
+					a[10] = a[14];
+					a[14] = ab;
+					}
+		
+		}	
+		
+		if(x1>=brickx1 && x1<=brickWidth+brickx1 && y1>=bricky3&& y1<= brickHeight+bricky3){
+					if(a[3]==0 ){
+					var ab = a[3];
+					a[3] = a[7];
+					a[7] = ab;
+					}else if(a[11]==0){
+					var ab = a[11];
+					a[11] = a[7];
+					a[7] = ab;
+					}
+					else if(a[6]==0){
+					var ab = a[6];
+					a[6] = a[7];
+					a[7] = ab;
+					}
+		
+		}	
+		
+		if(x1>=brickx2 && x1<=brickWidth+brickx2 && y1>=bricky3&& y1<= brickHeight+bricky3){
+					if(a[7]==0 ){
+					var ab = a[7];
+					a[7] = a[11];
+					a[11] = ab;
+					}else if(a[15]==0){
+					var ab = a[15];
+					a[15] = a[11];
+					a[11] = ab;
+					}
+					else if(a[10]==0){
+					var ab = a[10];
+					a[10] = a[11];
+					a[11] = ab;
+					}
+		
+		}	
+		
+		if(x1>=brickx1 && x1<=brickWidth+brickx1 && y1>=bricky1&& y1<= brickHeight+bricky1){
+					if(a[4]==0 ){
+					var ab = a[4];
+					a[4] = a[5];
+					a[5] = ab;
+					}else if(a[1]==0){
+					var ab = a[1];
+					a[1] = a[5];
+					a[5] = ab;
+					}
+					else if(a[6]==0){
+					var ab = a[6];
+					a[6] = a[5];
+					a[5] = ab;
+					}else if(a[9]==0){
+					var ab = a[9];
+					a[9] = a[5];
+					a[5] = ab;
+					}
+		
+		}	
+		
+		if(x1>=brickx1 && x1<=brickWidth+brickx1 && y1>=bricky2&& y1<= brickHeight+bricky2){
+					if(a[5]==0 ){
+					var ab = a[5];
+					a[5] = a[6];
+					a[6] = ab;
+					}else if(a[2]==0){
+					var ab = a[2];
+					a[2] = a[6];
+					a[6] = ab;
+					}
+					else if(a[7]==0){
+					var ab = a[7];
+					a[7] = a[6];
+					a[6] = ab;
+					}else if(a[10]==0){
+					var ab = a[10];
+					a[10] = a[6];
+					a[6] = ab;
+					}
+		
+		}	
+		
+		if(x1>=brickx2 && x1<=brickWidth+brickx2 && y1>=bricky1&& y1<= brickHeight+bricky1){
+					if(a[8]==0 ){
+					var ab = a[8];
+					a[8] = a[9];
+					a[9] = ab;
+					}else if(a[5]==0){
+					var ab = a[5];
+					a[5] = a[9];
+					a[9] = ab;
+					}
+					else if(a[10]==0){
+					var ab = a[10];
+					a[10] = a[9];
+					a[9] = ab;
+					}else if(a[13]==0){
+					var ab = a[13];
+					a[13] = a[9];
+					a[9] = ab;
+					}
+		
+		}	
+		
+		if(x1>=brickx2 && x1<=brickWidth+brickx2 && y1>=bricky2&& y1<= brickHeight+bricky2){
+					if(a[9]==0 ){
+					var ab = a[9];
+					a[9] = a[10];
+					a[10] = ab;
+					}else if(a[6]==0){
+					var ab = a[6];
+					a[6] = a[10];
+					a[10] = ab;
+					}
+					else if(a[11]==0){
+					var ab = a[11];
+					a[11] = a[10];
+					a[10] = ab;
+					}else if(a[14]==0){
+					var ab = a[14];
+					a[14] = a[10];
+					a[10] = ab;
+					}
+		
+		}	
+		
+	    number = a[w];
+		
+		game2.font = "75px Arial";
+		game2.fillStyle = "#0095DD";
+		game2.fillText(number , numX,numY);
+			w++;
+			
+			//if(a[w] == f[w]){
+					//alert("you won");
+					//}
+			
+		
+		}
+			
+		}
+
+	}
+
+function end(){
+
+var f = [1,5,9,13,2,6,10,14,3,7,11,15,4,8,12,0];
+
+	if(a[0]==f[0]&&a[1]==f[1]&&a[2]==f[2]&&a[3]==f[3]&&a[4]==f[4]&&a[5]==f[5]&&a[6]==f[6]&&a[7]==f[7]&&a[8]==f[8]
+			&&a[9]==f[9]&&a[10]==f[10]&&a[11]==f[11]&&a[12]==f[12]&&a[13]==f[13]&&a[14]==f[14]&&a[15]==f[15]   ){
+	alert("YOU WON!! ,\n score : "+ score );
+	document.location.reload();
+	
+	}
+}
+
+
+
+</script>
+</body>
+</html>
